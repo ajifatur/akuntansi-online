@@ -23,6 +23,7 @@ Route::get('/admin/kas', 'KasController@index');
 
 // Neraca
 Route::get('/admin/balancesheet/standard', 'BalanceSheetController@standard');
+Route::get('/admin/balancesheet/standard/data', 'BalanceSheetController@standardData')->name('admin.balancesheet.standard.data');
 
 /*
 // Login
