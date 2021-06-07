@@ -56,7 +56,9 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered table-stretch"></table>
+                        <table class="table table-hover table-bordered table-stretch">
+							{!! $content !!}
+						</table>
                     </div>
                 </div>
             </div>
@@ -72,7 +74,7 @@
 <script type="text/javascript">
 	// Get neraca on load
     $(window).on("load", function(){
-        get_neraca("{{ $user->groupid }}", "{{ $user->idkantor }}", "{{ $bulan1 }}", "{{ $bulan2 }}", "{{ $tahun }}");
+        // get_neraca("{{ $user->groupid }}", "{{ $user->idkantor }}", "{{ $bulan1 }}", "{{ $bulan2 }}", "{{ $tahun }}");
     });
 
 	// Filter
@@ -90,10 +92,10 @@
 	function get_neraca(grup, kantor, bulan1, bulan2, tahun){
 		$.ajax({
 			type: "get",
-			url: "{{ route('admin.balancesheet.multiperiod.data') }}",
+			url: "{{ route('admin.balancesheet.multiperiod') }}",
 			data: {grup: grup, kantor: kantor, bulan1: bulan1, bulan2: bulan2, tahun: tahun},
 			success: function(response){
-				$(".table").html(response);
+				$(".table").html(response.html);
 			},
 			error: function(response){
 				console.log(response);
