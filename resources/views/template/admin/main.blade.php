@@ -8,7 +8,10 @@
         <title>@yield('title') | Akuntansi Online</title>
     </head>
     <body class="app sidebar-mini">
-		@yield('content')
+        @include('template.admin._sidebar-admin')
+        <main class="a-app-content">
+		    @yield('content')
+        </main>
         @include('template.admin._js')
         @yield('js-extra')
     </body>

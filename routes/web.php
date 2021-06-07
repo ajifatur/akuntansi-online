@@ -22,8 +22,10 @@ Route::get('/', function () {
 Route::get('/admin/kas', 'KasController@index');
 
 // Neraca
-Route::get('/admin/balancesheet/standard', 'BalanceSheetController@standard');
+Route::get('/admin/balancesheet/standard', 'BalanceSheetController@standard')->name('admin.balancesheet.standard');
 Route::get('/admin/balancesheet/standard/data', 'BalanceSheetController@standardData')->name('admin.balancesheet.standard.data');
+Route::get('/admin/balancesheet/multiperiod', 'BalanceSheetController@multiperiod')->name('admin.balancesheet.multiperiod');
+Route::get('/admin/balancesheet/multiperiod/data', 'BalanceSheetController@multiperiodData')->name('admin.balancesheet.multiperiod.data');
 
 /*
 // Login

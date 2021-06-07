@@ -9,37 +9,36 @@
 
 	<!-- Filter -->
 	<form id="form-filter">
-	    <div class="row align-items-end mb-3">
-	        <div class="col-lg-3"></div>
-	        <div class="col-lg-3">
+		<input type="hidden" name="grup" value="{{ $user->groupid }}">
+		<div class="col-lg-3 col-md-6 mx-auto">
+			<div class="form-group row">
 	            <p class="m-0">Kantor</p>
-				<select class="form-control form-control-sm">
-					<option value="0" disabled>Konsolidasi</option>
+				<select name="kantor" class="form-control form-control-sm">
+					<option value="0" disabled>KONSOLIDASI</option>
 					@foreach($kantor as $data)
 					<option value="{{ $data->idkantor }}" {{ $data->idkantor == $user->idkantor ? 'selected' : '' }}>{{ $data->namakantor }}</option>
 					@endforeach
 				</select>
-	        </div>
-	        <div class="col-lg-3">
+			</div>
+			<div class="form-group row">
 	            <p class="m-0">Per Tanggal</p>            
 	            <div class="input-group">
 		            <div class="input-group-prepend">
 		            <span class="input-group-text bg-warning"><i class="fa fa-calendar"></i></span>
 		            </div>
-		            <input type="text" name="tanggal" id="tanggal" class="form-control form-control-sm" value="{{ date('d/m/Y', strtotime($tanggal)) }}" readonly>
+		            <input type="text" name="tanggal" class="form-control form-control-sm" value="{{ date('d/m/Y', strtotime($tanggal)) }}">
 	            </div>
-	        </div>
-	        <div class="col-lg-3 text-right mt-2 mt-lg-0"><button class="btn btn-info" type="submit">Terapkan</button></div>
-	    </div>
+			</div>
+			<div class="form-group row">
+				<button class="btn btn-sm btn-info" type="submit">Tampilkan</button>
+			</div>
+		</div>
 	</form>
 
-    <!-- Row -->
+    <!-- Table Data -->
     <div class="row">
-        <!-- Column -->
         <div class="col-md-12">
-            <!-- Tile -->
             <div class="tile">
-                <!-- Tile Body -->
                 <div class="tile-body">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered table-stretch">
@@ -58,13 +57,9 @@
                         </table>
                     </div>
                 </div>
-                <!-- /Tile Body -->
             </div>
-            <!-- /Tile -->
         </div>
-        <!-- /Column -->
     </div>
-    <!-- /Row -->
 </main>
 <!-- /Main -->
 
@@ -84,22 +79,34 @@
     });
 </script>
 <script type="text/javascript">
-	$(function(){
-		var tanggal = "{{ date('d/m/Y', strtotime($tanggal)) }}";
-		var kantor = "{{ $user->idkantor }}";
-		var grup = "{{ $user->groupid }}";
+	// Get neraca on load
+    $(window).on("load", function(){
+		get_neraca("{{ $user->groupid }}", "{{ $user->idkantor }}", "{{ date('d/m/Y', strtotime($tanggal)) }}");
+	});
+
+	// Filter
+	$(document).on("submit", "#form-filter", function(e){
+		e.preventDefault();
+		var grup = $("#form-filter").find("input[name=grup]").val();
+		var kantor = $("#form-filter").find("select[name=kantor]").val();
+		var tanggal = $("#form-filter").find("input[name=tanggal]").val();
+		get_neraca(grup, kantor, tanggal);
+	});
+
+	// Function get neraca
+	function get_neraca(grup, kantor, tanggal){
 		$.ajax({
 			type: "get",
 			url: "{{ route('admin.balancesheet.standard.data') }}",
-			data: {tanggal: tanggal, kantor: kantor, grup: grup},
+			data: {grup: grup, kantor: kantor, tanggal: tanggal},
 			success: function(response){
 				$(".table tbody").html(response);
 			},
 			error: function(response){
 				console.log(response);
 			}
-		})
-	})
+		});
+	}
 </script>
 
 @endsection
